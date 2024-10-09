@@ -5,12 +5,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: is436
       MYSQL_DATABASE: IS436
-      MYSQL_USER: is436
+      MYSQL_USER: root
       MYSQL_PASSWORD: is436
-    ports: 
-     - "3306:3306"
-    volumes: db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
 volumes:
   db_data:
 networks:
-  mysql_netowrk:
+  mysql_network:

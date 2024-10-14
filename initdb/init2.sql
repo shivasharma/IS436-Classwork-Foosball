@@ -1,3 +1,4 @@
+ CREATE DATABASE IS436;
 
 -- Step 1: Create the Customer table
 CREATE TABLE Customer (

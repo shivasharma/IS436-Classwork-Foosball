@@ -12,7 +12,7 @@ The architecture of Foosball.com consists of several key components that work to
 > - Mobile Application: A dedicated mobile app for iOS and Android, allowing users to access features on the go.
 >
 
-> # **2 API Layer**
+> # ** 2 API Layer **
 >
 > - RESTful API: A set of endpoints that facilitate communication between the client layer and the server. This layer handles requests for user data, game statistics, and community features.
 >

@@ -1,22 +1,20 @@
-# Description: Dockerfile for the foosball web application
-FROM nginx:latest
 
+FROM nginx:1.26.0-alpine
+
+# Remove default welcome page
+RUN rm /usr/share/nginx/html/index.html
+
+# 1. support running as arbitrary user which belogs to the root group
+# 2. users are not allowed to listen on priviliged ports
+# 3. comment user directive as master process is run as user in OpenShift anyhow
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx && \
+    chgrp -R root /var/cache/nginx && \
+    sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf && \
+    sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf && \
+    addgroup nginx root
+
+EXPOSE 8081
 # Copy the HTML files to the nginx html directory
 COPY . /usr/share/nginx/html
 
-# Create necessary directories and set permissions
-RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
-    chmod -R 775 /var/cache/nginx /var/run /var/log/nginx /etc/nginx && \
-    chown -R 1001:0 /var/cache/nginx /var/run /var/log/nginx /etc/nginx
-
-# Remove or comment out the 'user' directive in the config
-RUN sed -i 's/^user/#user/' /etc/nginx/nginx.conf
-
-# Use a non-root user
-USER 1001
-
-# Expose default HTTP port
-EXPOSE 80
-
-# Run Nginx
-CMD ["nginx", "-g", "daemon off;"]
+USER nginx

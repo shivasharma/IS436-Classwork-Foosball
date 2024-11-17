@@ -1,5 +1,3 @@
-name: Build and Push Docker image to Docker Hub
-
 on: push
 jobs:
   push_to_registry:
@@ -20,4 +18,7 @@ jobs:
         with:
           context: foosball/
           push: true
-          tags: shivathebravo/foosball:latest
+          repository: shivathebravo/foosball
+          tags: |
+            latest
+            ${{ github.run_number }}

@@ -9,3 +9,9 @@ EXPOSE 80
 
 # Start nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
+
+RUN mkdir -p /var/cache/nginx && \
+    chmod -R 777 /var/cache/nginx
+
+RUN useradd -u 1001 nginx
+USER 1001

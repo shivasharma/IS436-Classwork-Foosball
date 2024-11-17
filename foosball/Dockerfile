@@ -18,8 +18,5 @@ RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
 # Switch to the non-root user
 USER 1001
 
-# Expose Nginx default port
-EXPOSE 80
-
 # Run Nginx
 CMD ["nginx", "-g", "daemon off;"]

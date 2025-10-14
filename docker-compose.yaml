@@ -6,8 +6,8 @@ services:
     environment:
       MYSQL_DATABASE: IS436
       MYSQL_USER: user  # Use a non-root user
-      MYSQL_PASSWORD: user_password  # Set a secure password for the user
-      MYSQL_ROOT_PASSWORD: root_password  # Set a secure root password
+      MYSQL_PASSWORD: password  # Set a secure password for the user
+      MYSQL_ROOT_PASSWORD: rootpassword  # Set a secure root password
     ports:
       - "3307:3306"
     volumes:

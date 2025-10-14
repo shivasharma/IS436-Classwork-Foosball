@@ -4,15 +4,18 @@ IS436 Classwork Foosball Project
 # Docker command to create mysql database
 
 docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=mydatabase -e MYSQL_USER=myuser -e MYSQL_PASSWORD=mypassword -p 3306:3306 -d mysql:latest
+| Option / Argument | Description |
+|--------------------|-------------|
+| `--name mysql-container` | Names the container **mysql-container** |
+| `-e MYSQL_ROOT_PASSWORD=rootpassword` | Sets the **root password** for MySQL |
+| `-e MYSQL_DATABASE=mydatabase` | Creates a **database** named `mydatabase` |
+| `-e MYSQL_USER=myuser` | Creates a **user** named `myuser` |
+| `-e MYSQL_PASSWORD=mypassword` | Sets the **password** for `myuser` |
+| `-p 3306:3306` | Maps **port 3306** of the container to **port 3306** on the host |
+| `-d` | Runs the container in **detached mode** |
+| `mysql:latest` | Uses the **latest MySQL image** from Docker Hub |
 
-`--name mysql-container`: Names the container `mysql-container`.
-`-e MYSQL_ROOT_PASSWORD=rootpassword`: Sets the root password.
-`-e MYSQL_DATABASE=mydatabase`: Creates a database named `mydatabase`.
-`-e MYSQL_USER=myuser`: Creates a user named `myuser`.
-`-e MYSQL_PASSWORD=mypassword`: Sets the password for `myuser`.
-`-p 3306:3306`: Maps port 3306 of the container to port 3306 of the host.
-`-d`: Runs the container in detached mode.
-`mysql:latest`: Uses the latest MySQL image.
+
 
 # 🐳 Docker Command Reference
 

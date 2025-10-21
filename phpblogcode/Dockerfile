@@ -1,21 +1,20 @@
-
-
-
-
-# Dockerfile for PHP with MySQLi
-# Use the PHP Apache image
+# syntax=docker/dockerfile:1
 FROM php:8.1.1-apache
 
-RUN apt-get update && apt-get install -y netcat \
-    && docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+# Install required PHP extensions and tools
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    && docker-php-ext-install mysqli pdo pdo_mysql \
+    && docker-php-ext-enable mysqli
 
+# Enable Apache mod_rewrite (optional but useful for PHP apps)
+RUN a2enmod rewrite
 
-# Copy the application code to the container
-COPY ./ /var/www/html
+# Copy your source code
+COPY . /var/www/html
 
+# Convert any Windows line endings to Linux line endings (prevents bash\r errors)
+RUN apt-get install -y dos2unix && \
+    find /var/www/html -type f -print0 | xargs -0 dos2unix || true
 
-COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
-RUN chmod +x /usr/local/bin/wait-for-it.sh
-
-# Start with wait-for-it
-CMD ["wait-for-it.sh", "db", "3306", "--", "apache2-foreground"]
+WORKDIR /var/www/html

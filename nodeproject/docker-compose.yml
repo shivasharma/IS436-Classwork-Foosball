@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  nodeapp:
+    container_name: express-todo-api
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=production
+    restart: always

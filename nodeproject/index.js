@@ -5,7 +5,23 @@ const app=express();
 
 const PORT=8000;
 
+// Serve static files from public directory
+app.use(express.static('public'));
+
 app.use(express.urlencoded({extended:false}));
+
+// Root route
+app.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to the Express Todo API",
+    endpoints: {
+      todos: "  ",
+      todosAxios: "/api/todoaxios",
+      users: "/api/users",
+      userById: "/api/users/:id"
+    }
+  });
+});
 
 //get all todo data
 app.get("/api/todo", async (req, res) => {

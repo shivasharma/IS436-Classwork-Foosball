@@ -1,3 +1,5 @@
+version: '3.8' # Specify the Compose file version
+
 services: # Define all services (containers) to be run
   db: # The database service
     image: mysql:8.0 # Use the MySQL 8.0 Alpine image (lightweight version)
@@ -12,10 +14,21 @@ services: # Define all services (containers) to be run
       - "3307:3306" # Map host port 3307 to container port 3306 (MySQL default)
     volumes:
       - db_data:/var/lib/mysql # Persist database data using a named volume
-      - ./initdb:/docker-entrypoint-initdb.d # Mount local initdb directory to run initialization scripts
+      - ./initdb:/docker-entrypoint-initdb.d:ro # Mount local initdb directory as read-only to run initialization scripts
+
     networks:
       - mysql_network # Connect this service to the custom network
     restart: unless-stopped # Always restart unless explicitly stopped
+
+    # Resource limits (adjust as needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
     healthcheck: # Health check to monitor MySQL readiness
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] # Run 'mysqladmin ping' to check if MySQL is alive
@@ -24,8 +37,10 @@ services: # Define all services (containers) to be run
       retries: 5 # Mark as unhealthy after 5 consecutive failures
       start_period: 20s # Wait 20 seconds before starting health checks (gives MySQL time to initialize)
 
+
 volumes: # Define named volumes for persistent data
   db_data: # Volume for MySQL data
+
 
 networks: # Define custom networks for service communication
   mysql_network: # Custom network for the database

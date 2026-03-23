@@ -1,4 +1,3 @@
-version: '3.8' # Specify the Compose file version
 
 services: # Define all services (containers) to be run
   db: # The database service
@@ -23,6 +22,8 @@ services: # Define all services (containers) to be run
     # Resource limits (adjust as needed)
     deploy:
       resources:
+
+      
         limits:
           cpus: '0.50'
           memory: 512M

@@ -1,9 +1,6 @@
-
 -- Ensure the database exists and use it
-CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
-USE ${MYSQL_DATABASE};
-
-
+CREATE DATABASE IF NOT EXISTS IS436;
+USE IS436;
 
 -- Step 1: Create the Customer table
 CREATE TABLE Customer (
@@ -13,24 +10,24 @@ CREATE TABLE Customer (
     CustMailId VARCHAR(30)
 );
 
--- Step 2: Create the Order table with CustId as a foreign key
+-- Step 2: Create the `Order` table with CustId as a foreign key
 CREATE TABLE `Order` (
     OrderId INT NOT NULL PRIMARY KEY,
     OrderDate DATE NOT NULL,
     CustId INT NOT NULL,
     OrderAmount DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (CustId) REFERENCES Customer(CustId)
+        ON DELETE CASCADE -- Optional: Define the action on delete, you can adjust this
 );
 
---Insert Record
--- Insert into the Customer table
+-- Insert records into the Customer table
 INSERT INTO Customer (CustId, CustName, CustCode, CustMailId) 
 VALUES 
 (1, 'John Doe', 'C123', 'johndoe@example.com'),
 (2, 'Jane Smith', 'C124', 'janesmith@example.com'),
 (3, 'Michael Brown', 'C125', 'michaelbrown@example.com');
 
-
+-- Insert records into the `Order` table
 INSERT INTO `Order` (OrderId, OrderDate, CustId, OrderAmount) 
 VALUES 
 (101, '2024-10-10', 1, 150.75),
@@ -52,6 +49,7 @@ CREATE TABLE Book (
     PublishedYear INT,
     AuthorId INT,
     FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId)
+        ON DELETE SET NULL -- Optional: Define the action on delete, you can adjust this
 );
 
 -- Insert authors into the Author table
@@ -61,7 +59,6 @@ VALUES
 ('Jane Austen'),
 ('Mark Twain');
 
-
 -- Insert books into the Book table with the corresponding AuthorId
 INSERT INTO Book (BookTitle, PublishedYear, AuthorId) 
 VALUES 
@@ -70,15 +67,16 @@ VALUES
 ('Pride and Prejudice', 1813, 2),
 ('Adventures of Huckleberry Finn', 1884, 3),
 ('The Adventures of Tom Sawyer', 1876, 3);
+
 ------------------------------------------------------------------------------------------------------------------
--- Step 1: Modify the Book table by removing the AuthorId column
+-- Step 1: Modify the Book table by removing the AuthorId column (BookMany)
 CREATE TABLE BookMany (
     BookId INT AUTO_INCREMENT PRIMARY KEY,
     BookTitle VARCHAR(255) NOT NULL,
     PublishedYear INT
 );
 
--- Author table remains the same
+-- Author table remains the same (AuthorMany)
 CREATE TABLE AuthorMany (
     AuthorId INT AUTO_INCREMENT PRIMARY KEY,
     AuthorName VARCHAR(150) NOT NULL
@@ -89,18 +87,18 @@ CREATE TABLE AuthorBookMany (
     AuthorId INT,
     BookId INT,
     PRIMARY KEY (AuthorId, BookId),
-    FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId),
-    FOREIGN KEY (BookId) REFERENCES Book(BookId)
+    FOREIGN KEY (AuthorId) REFERENCES AuthorMany(AuthorId),
+    FOREIGN KEY (BookId) REFERENCES BookMany(BookId)
 );
 
--- Insert authors into the Author table
+-- Insert authors into the AuthorMany table
 INSERT INTO AuthorMany (AuthorName) 
 VALUES 
 ('George Orwell'),
 ('Jane Austen'),
 ('Mark Twain');
 
--- Insert books into the Book table
+-- Insert books into the BookMany table
 INSERT INTO BookMany (BookTitle, PublishedYear) 
 VALUES 
 ('1984', 1949),
@@ -109,7 +107,7 @@ VALUES
 ('Adventures of Huckleberry Finn', 1884),
 ('The Adventures of Tom Sawyer', 1876);
 
--- Link authors to books in the AuthorBook junction table
+-- Link authors to books in the AuthorBookMany junction table
 INSERT INTO AuthorBookMany (AuthorId, BookId) 
 VALUES 
 (1, 1),  -- George Orwell wrote 1984

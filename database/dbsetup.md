@@ -17,10 +17,7 @@ This guide explains how to set up and run the MySQL database for this project us
 Edit the `.env` file in the `database/` folder to set your database name, user, and passwords:
 
 ```
-MYSQL_DATABASE=IS436
-MYSQL_USER=user
-MYSQL_PASSWORD=your_secure_password
-MYSQL_ROOT_PASSWORD=your_secure_root_password
+
 ```
 
 ### 2. (Optional) Add Initialization Scripts
